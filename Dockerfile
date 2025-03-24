@@ -6,8 +6,7 @@ FROM minimum2scp/systemd:latest
 ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
 CMD ["/sbin/init"]
 
-COPY tpm-server.service /lib/systemd/system/tpm-server.service
-
+# COPY tpm-server.service /lib/systemd/system/tpm-server.service
 
 # COPY sources.list /etc/apt/sources.list
 
@@ -30,9 +29,8 @@ autoconf-archive \
   libini-config-dev \
   libcurl4-openssl-dev \
   libltdl-dev \
-  libglib2.0-dev
-
-RUN apt-get install -y wget
+  libglib2.0-dev \
+  wget
 
 # openssl降级
 # COPY openssl-3.0.2.tar.gz /openssl-3.0.2.tar.gz
@@ -59,35 +57,25 @@ RUN apt-get install -y wget
 # RUN openssl version
 # RUN cd ibmtpm1682/src && make && cp ./tpm_server /usr/local/bin/
 
-RUN echo $PATH
-RUN touch /usr/local/bin/tpm2_server
-
-COPY tpm2-tss /tpm2-tss
 WORKDIR /tpm2-tss
-RUN ./bootstrap
-RUN ./configure --enable-unit
-RUN make check
-RUN make install && ldconfig
+COPY tpm2-tss /tpm2-tss
+RUN ./bootstrap && ./configure --enable-unit && make check && make install && ldconfig
 
 
-COPY tpm2-abrmd /tpm2-abrmd
 WORKDIR /tpm2-abrmd
-RUN ./bootstrap
-RUN ./configure --with-dbuspolicydir=/etc/dbus-1/system.d --with-systemdsystemunitdir=/lib/systemd/system
-RUN make && make install
-RUN cp /usr/local/share/dbus-1/system-services/com.intel.tss2.Tabrmd.service /usr/share/dbus-1/system-services/
-COPY tpm2-abrmd.service /lib/systemd/system/tpm2-abrmd.service
+COPY tpm2-abrmd /tpm2-abrmd 
+RUN ./bootstrap && \
+./configure --with-dbuspolicydir=/etc/dbus-1/system.d && \
+make && make install && \
+cp /usr/local/share/dbus-1/system-services/com.intel.tss2.Tabrmd.service /usr/share/dbus-1/system-services/
+COPY tpm2-abrmd.service /usr/local/lib/systemd/system/tpm2-abrmd.service
 RUN systemctl enable tpm2-abrmd
 
-COPY tpm2-tools /tpm2-tools
+
 WORKDIR /tpm2-tools
+COPY tpm2-tools /tpm2-tools
 RUN ./bootstrap && ./configure && make && make install
 
 WORKDIR /
-RUN apt-get install -y dd
-
-RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1
-RUN dd if=/dev/zero of=5g_file.bin bs=1G count=5
-RUN dd if=/dev/zero of=10g_file.bin bs=1G count=10
-
 COPY compute.sh /compute.sh
+RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1
