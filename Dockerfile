@@ -59,3 +59,22 @@ RUN apt-get install -y wget
 # RUN openssl version
 # RUN cd ibmtpm1682/src && make && cp ./tpm_server /usr/local/bin/
 
+RUN echo $PATH
+RUN touch /usr/local/bin/tpm2_server
+
+COPY tpm2-tss /tpm2-tss
+WORKDIR /tpm2-tss
+RUN ./bootstrap
+RUN ./configure --enable-unit
+RUN make check
+RUN make install && ldconfig
+
+
+COPY tpm2-abrmd /tpm2-abrmd
+WORKDIR /tpm2-abrmd
+RUN ./bootstrap
+RUN ./configure --with-dbuspolicydir=/etc/dbus-1/system.d --with-systemdsystemunitdir=/lib/systemd/system
+RUN make && make install
+RUN cp /usr/local/share/dbus-1/system-services/com.intel.tss2.Tabrmd.service /usr/share/dbus-1/system-services/
+COPY tpm2-abrmd.service /lib/systemd/system/tpm2-abrmd.service
+RUN systemctl enable tpm2-abrmd
