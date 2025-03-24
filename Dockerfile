@@ -78,3 +78,7 @@ RUN make && make install
 RUN cp /usr/local/share/dbus-1/system-services/com.intel.tss2.Tabrmd.service /usr/share/dbus-1/system-services/
 COPY tpm2-abrmd.service /lib/systemd/system/tpm2-abrmd.service
 RUN systemctl enable tpm2-abrmd
+
+COPY tpm2-tools /tpm2-tools
+WORKDIR /tpm2-tools
+RUN ./bootstrap && ./configure && make && make install

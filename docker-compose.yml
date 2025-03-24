@@ -1,0 +1,21 @@
+version: '3'
+services:
+  # tpm-server
+  sd5s:
+    image: sd5s:latest
+    ports:
+      - "2321:2321"  # 将容器的 80 端口映射到宿主机的 80 端口
+    networks:
+      - mynetwork
+  sd5:
+    image: sd5:latest
+    networks:
+      - mynetwork
+    depends_on:
+      - sd5s
+    privileged: true  # 启用特权模式
+    restart: always
+
+networks:
+  mynetwork:
+    driver: bridge
