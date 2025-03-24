@@ -82,3 +82,12 @@ RUN systemctl enable tpm2-abrmd
 COPY tpm2-tools /tpm2-tools
 WORKDIR /tpm2-tools
 RUN ./bootstrap && ./configure && make && make install
+
+WORKDIR /
+RUN apt-get install -y dd
+
+RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1
+RUN dd if=/dev/zero of=5g_file.bin bs=1G count=5
+RUN dd if=/dev/zero of=10g_file.bin bs=1G count=10
+
+COPY compute.sh /compute.sh
