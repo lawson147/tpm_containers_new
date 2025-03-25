@@ -4,7 +4,7 @@ services:
   sd5s:
     image: sd5s:latest
     ports:
-      - "2321:2321"  # 将容器的 80 端口映射到宿主机的 80 端口
+      - "2321:2321"
     networks:
       - mynetwork
   sd5:

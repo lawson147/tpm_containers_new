@@ -78,4 +78,6 @@ RUN ./bootstrap && ./configure && make && make install
 
 WORKDIR /
 COPY compute.sh /compute.sh
-RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1
+RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1 && \
+dd if=/dev/zero of=1m_file.bin bs=1M count=1 && \
+dd if=/dev/zero of=100mg_file.bin bs=1M count=100
