@@ -93,4 +93,5 @@ dd if=/dev/zero of=100mg_file.bin bs=1M count=100
 
 # process /tpm_state file
 # sudo dd if=/dev/zero of=./tpm_state bs=1M count=5
-COPY tpm_state /tpm_state 
+# COPY NVChip /NVChip 
+# RUN chown tss /NVChip && chgrp tss /NVChip
