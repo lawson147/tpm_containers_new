@@ -6,7 +6,7 @@ Description=TPM2 Access Broker and Resource Management Daemon
 [Service]
 Type=dbus
 BusName=com.intel.tss2.Tabrmd
-ExecStart=tpm2-abrmd --tcti="libtss2-tcti-mssim.so.0:host=sd5s,port=2321"
+ExecStart=tpm2-abrmd --tcti="tcti-libtpms:/tpm_state"
 User=tss
 
 [Install]

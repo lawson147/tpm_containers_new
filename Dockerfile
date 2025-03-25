@@ -57,11 +57,20 @@ autoconf-archive \
 # RUN openssl version
 # RUN cd ibmtpm1682/src && make && cp ./tpm_server /usr/local/bin/
 
+# libtpm (as the role of simulator)
+COPY v0.10.0.tar.gz /v0.10.0.tar.gz
+WORKDIR /
+# RUN apt-get install -y libtool pkg-config fuzz
+RUN tar -zxvf v0.10.0.tar.gz && \
+cd libtpms-0.10.0/ && \
+./autogen.sh --prefix=/usr/local --with-tpm2 --with-openssl --disable-dependency-tracking && \
+make && make install
+
 WORKDIR /tpm2-tss
 COPY tpm2-tss /tpm2-tss
-RUN ./bootstrap && ./configure --enable-unit && make check && make install && ldconfig
+RUN ./bootstrap && ./configure --enable-unit --enable-tcti-libtpms=yes && make check && make install && ldconfig
 
-
+# abrmd
 WORKDIR /tpm2-abrmd
 COPY tpm2-abrmd /tpm2-abrmd 
 RUN ./bootstrap && \
@@ -71,7 +80,7 @@ cp /usr/local/share/dbus-1/system-services/com.intel.tss2.Tabrmd.service /usr/sh
 COPY tpm2-abrmd.service /usr/local/lib/systemd/system/tpm2-abrmd.service
 RUN systemctl enable tpm2-abrmd
 
-
+# tools
 WORKDIR /tpm2-tools
 COPY tpm2-tools /tpm2-tools
 RUN ./bootstrap && ./configure && make && make install
@@ -81,3 +90,7 @@ COPY compute.sh /compute.sh
 RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1 && \
 dd if=/dev/zero of=1m_file.bin bs=1M count=1 && \
 dd if=/dev/zero of=100mg_file.bin bs=1M count=100
+
+# process /tpm_state file
+# sudo dd if=/dev/zero of=./tpm_state bs=1M count=5
+COPY tpm_state /tpm_state 
