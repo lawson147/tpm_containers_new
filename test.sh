@@ -1,16 +1,17 @@
-name=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
-echo $name
-# sudo docker exec -it $name /bin/bash
+declare -a name
+
+for n in {1..5}
+do
+  name[$n]=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
+  echo ${name[$n]}
+done
 
 
-name=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
-echo $name
+sleep 5
 
-name=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
-echo $name
-
-name=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
-echo $name
-
-name=$(sudo docker run --privileged -v ddfiles:/data -d sd5 | awk '{print $1}')
-echo $name
+set -x
+for n in {1..5}
+do
+  sudo docker exec -it ${name[$n]} /bin/bash -c "./compute.sh"
+  echo -e "$n\n"
+done

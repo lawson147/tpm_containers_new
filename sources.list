@@ -1,0 +1,12 @@
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise-updates main restricted
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise-updates main restricted
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise universe
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise universe
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise-updates universe
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise-updates universe
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise-updates multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise-updates multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ precise-backports main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ precise-backports main restricted universe multiverse

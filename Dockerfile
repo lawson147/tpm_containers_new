@@ -1,6 +1,6 @@
 FROM minimum2scp/systemd:latest
 
-COPY sources.list /etc/apt/sources.list
+# COPY sources.list /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y build-essential \
   autoconf-archive \
@@ -97,4 +97,4 @@ COPY create_ddfiles.sh /
 # COPY tpm-server.service /lib/systemd/system/tpm-server.service
 
 ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
-CMD ["/sbin/init && ./compute.sh"]
+CMD ["/sbin/init"]
