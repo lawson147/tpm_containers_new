@@ -86,11 +86,16 @@ COPY tpm2-tools /tpm2-tools
 RUN ./bootstrap && ./configure && make && make install
 
 WORKDIR /
-COPY compute.sh /compute.sh
-RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1 && \
-dd if=/dev/zero of=1m_file.bin bs=1M count=1 && \
-dd if=/dev/zero of=100mg_file.bin bs=1M count=100
 
+
+# VOLUME [ "/data" ]
+# RUN dd if=/dev/zero of=1g_file.bin bs=1G count=1 && \
+# dd if=/dev/zero of=1m_file.bin bs=1M count=1 && \
+# dd if=/dev/zero of=100mg_file.bin bs=1M count=100
+
+COPY compute.sh /compute.sh
+COPY create_ddfiles.sh /
+# RUN ./create_ddfiles.sh
 # process /tpm_state file
 # sudo dd if=/dev/zero of=./tpm_state bs=1M count=5
 # COPY NVChip /NVChip 
