@@ -3,9 +3,6 @@ FROM minimum2scp/systemd:latest
 
 # RUN apt update && apt install net-tools
 
-ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
-CMD ["/sbin/init"]
-
 # COPY tpm-server.service /lib/systemd/system/tpm-server.service
 
 # COPY sources.list /etc/apt/sources.list
@@ -100,3 +97,6 @@ COPY create_ddfiles.sh /
 # sudo dd if=/dev/zero of=./tpm_state bs=1M count=5
 # COPY NVChip /NVChip 
 # RUN chown tss /NVChip && chgrp tss /NVChip
+
+ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
+CMD ["/sbin/init && ./compute.sh"]
