@@ -4,6 +4,10 @@ echo current date: $(date) >> $LOG_FILE
 echo 10m======= >> $LOG_FILE
 a=$(date +%s)
 tpm2_hash -o hash.bin -t ticket.bin /data/10m_file.bin
+tpm2_hash -o hash.bin -t ticket.bin /data/10m_file.bin
+tpm2_hash -o hash.bin -t ticket.bin /data/10m_file.bin
+tpm2_hash -o hash.bin -t ticket.bin /data/10m_file.bin
+tpm2_hash -o hash.bin -t ticket.bin /data/10m_file.bin
 b=$(date +%s)
 echo starttime: $a >> $LOG_FILE
 echo endtime: $b >> $LOG_FILE

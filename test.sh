@@ -6,12 +6,11 @@ do
   echo ${name[$n]}
 done
 
-
+# waiting for abrmd booting
 sleep 5
 
-set -x
 for n in {1..5}
 do
-  sudo docker exec -it ${name[$n]} /bin/bash -c "./compute.sh"
+  sudo docker exec -d ${name[$n]} /bin/bash -c "./compute.sh"
   echo -e "$n\n"
 done

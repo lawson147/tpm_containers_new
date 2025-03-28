@@ -86,6 +86,7 @@ WORKDIR /
 # dd if=/dev/zero of=100mg_file.bin bs=1M count=100
 
 COPY compute.sh /compute.sh
+COPY compute_5.sh /compute_5.sh
 COPY create_ddfiles.sh /
 # RUN ./create_ddfiles.sh
 # process /tpm_state file
