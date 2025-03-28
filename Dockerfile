@@ -1,14 +1,9 @@
 FROM minimum2scp/systemd:latest
 
-
-# RUN apt update && apt install net-tools
-
-# COPY tpm-server.service /lib/systemd/system/tpm-server.service
-
-# COPY sources.list /etc/apt/sources.list
+COPY sources.list /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y build-essential \
-autoconf-archive \
+  autoconf-archive \
   libcmocka0 \
   libcmocka-dev \
   procps \
@@ -97,6 +92,9 @@ COPY create_ddfiles.sh /
 # sudo dd if=/dev/zero of=./tpm_state bs=1M count=5
 # COPY NVChip /NVChip 
 # RUN chown tss /NVChip && chgrp tss /NVChip
+
+# RUN apt update && apt install net-tools
+# COPY tpm-server.service /lib/systemd/system/tpm-server.service
 
 ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
 CMD ["/sbin/init && ./compute.sh"]
