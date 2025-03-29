@@ -1,3 +1,8 @@
+# init tpm_num(based on flock)
+TPM_NUM="/var/lib/docker/volumes/ddfiles/_data/tpm.num"
+COUNT=50
+echo 0 | sudo tee $TPM_NUM
+
 declare -a name
 
 for n in {1..50}
@@ -7,7 +12,11 @@ do
 done
 
 # waiting for abrmd booting
-sleep 50
+while number=$(sudo flock -s $TPM_NUM -c "sudo head $TPM_NUM"); do
+    if [[ "$number" -ge $COUNT ]]; then
+        break
+    fi
+done
 
 for n in {1..50}
 do

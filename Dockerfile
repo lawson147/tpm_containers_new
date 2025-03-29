@@ -96,5 +96,10 @@ COPY create_ddfiles.sh /
 # RUN apt update && apt install net-tools
 # COPY tpm-server.service /lib/systemd/system/tpm-server.service
 
+
+# abrmd daemon process counting tool
+COPY notifier.service /usr/local/lib/systemd/system/notifier.service
+RUN systemctl enable notifier.service
+
 ENTRYPOINT ["/opt/init-wrapper/sbin/entrypoint.sh"]
 CMD ["/sbin/init"]
